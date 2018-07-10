@@ -26,4 +26,8 @@ class BookListView(generic.ListView):
     context_object_name = 'my book list'
     queryset = models.Book.objects.all()
     template_name = 'catalog/books/book_list.html'
+class BookDetailView(generic.DetailView):
+    model = models.Book
+    template_name = 'catalog/books/book_detail.html'
+
     
