@@ -1,0 +1,13 @@
+{% extends "catalog/base.html" %}
+
+{% block content %}
+  <h1>Title: {{ author.title }}</h1>
+
+  <p><strong>first name:</strong> <a href="">{{ author.first_name }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>second name:</strong> {{ author.second_name }}</p>
+  <p><strong>birth:</strong> {{ author.date_of_birth }}</p> 
+  {% if author.date_of_death %}
+  <p><strong>died:</strong> {{ author.date_of_death }}</p>  
+  {% endif %}
+  
+{% endblock %}

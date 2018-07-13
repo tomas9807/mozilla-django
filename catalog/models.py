@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from datetime import date
 # Create your models here.
 import uuid
 #culo
@@ -10,8 +12,11 @@ class Author(models.Model):
     date_of_death= models.DateField(null=True,blank=True)
     def __str__(self):
         return f'{self.first_name},{self.second_name}'
+    def get_absolute_url(self):
+        return reverse('author-detail',args=[str(self.id)])
     class Meta:
         ordering = ['second_name','first_name']
+    
 
 class Genre(models.Model):
     name = models.CharField(max_length=20,help_text='Enter a book genre (e.g. Science Fiction, French Poetry etc.)')
@@ -43,6 +48,7 @@ class BookInstance(models.Model):
     book = models.ForeignKey(Book,on_delete=models.SET_NULL,null=True)
     imprint = models.CharField(max_length=20,help_text='imprint')
     due_back = models.DateField(null=True,blank=True)
+    borrower = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
     LOAD_STATUS = (
         ('m', 'Maintenance'),
         ('o', 'On loan'),
@@ -55,6 +61,11 @@ class BookInstance(models.Model):
 
     def __str__(self):
         return f'{self.id}:{self.book}'
+    @property
+    def is_overdure(self):
+        if self.due_back and date.today()> self.due_back:
+            return True
+        return False
 
 
     
